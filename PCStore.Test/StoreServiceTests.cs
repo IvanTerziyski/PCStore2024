@@ -1,10 +1,15 @@
-﻿using PCStore.Models.Models;
 
-namespace PCStore.DL.InMemoryDb
+using PCStore.DL.Interfaces;
+using PCStore.DL.Repositories;
+using PCStore.Models.Models;
+using Moq;
+using PCStore.BL.Services;
+
+namespace ProductStore.Test
 {
-    internal class StaticData
+    public class StoreServiceTests
     {
-        public static List<Product> Products = new List<Product>()
+        public static List<Product> ProductData = new List<Product>()
         {
             new Product()
             {
@@ -59,5 +64,53 @@ namespace PCStore.DL.InMemoryDb
                 "and supports computers and related products and services. Dell is owned by its parent company, Dell Technologies."
             },
         };
+        [Fact]
+        public void CheckProductCount_OK()
+        {
+            //setup
+            var input = 5;
+            var expectedCount = 9;
+
+            var mockedProductRepository =
+                new Mock<IProductRepository>();
+
+            mockedProductRepository.Setup(x => x.GetAllProducts()).Returns(ProductData);
+
+            //inject
+            var productService = new ProductService(mockedProductRepository.Object);
+            var manufacturerService = new ManufacturerService(new ManufacturerRepository());
+            var service = new StoreService(manufacturerService, productService);
+
+            //act
+            var result = service.CheckProductCount(input);
+
+            //Assert
+            Assert.Equal(expectedCount, result);
+
+        }
+        [Fact]
+        public void CheckProductCount_NegativeInput()
+        {
+            //setup
+            var input = -5;
+            var expectedCount = 0;
+
+            var mockedProductRepository =
+                new Mock<IProductRepository>();
+
+            mockedProductRepository.Setup(x => x.GetAllProducts()).Returns(ProductData);
+
+            //inject
+            var productService = new ProductService(mockedProductRepository.Object);
+            var manufacturerService = new ManufacturerService(new ManufacturerRepository());
+            var service = new StoreService(manufacturerService, productService);
+
+            //act
+            var result = service.CheckProductCount(input);
+
+            //Assert
+            Assert.Equal(expectedCount, result);
+
+        }
     }
 }
