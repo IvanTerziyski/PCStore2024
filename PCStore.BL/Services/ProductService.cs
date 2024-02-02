@@ -26,11 +26,11 @@ namespace PCStore.BL.Services
             return _ProductRepository.GetAllProducts();
         }
 
-        //public List<Product> GetAllProductsByAuthorAfterReleaseDate(int authorId, DateTime DateAfter)
-        //{
-        //    var result = _ProductRepository.GetAllProductsByAuthor(authorId);
-        //    return result.Where(b => b.ReleaseDate >= DateAfter).ToList();
-        //}
+        public List<Product> GetAllProductsFromManufacturerAfterReleaseDate(int manufacturerId, DateTime DateAfter)
+        {
+            var result = _ProductRepository.GetAllProductsByManufacturer(manufacturerId);
+            return result.Where(b => b.ReleaseDate >= DateAfter).ToList();
+        }
 
         public Product? GetProduct(int id)
         {

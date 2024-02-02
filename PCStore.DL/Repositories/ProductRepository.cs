@@ -23,12 +23,12 @@ namespace PCStore.DL.Repositories
             return StaticData.Products;
         }
 
-        //public List<Product> GetAllProductsByAuthor(int authorId)
-        //{
-        //    return InMemoryDb.StaticData.Products
-        //            .Where(b => b.AuthorId == authorId)
-        //            .ToList();
-        //}
+        public List<Product> GetAllProductsByManufacturer(int ManufacturerId)
+        {
+            return InMemoryDb.StaticData.Products
+                    .Where(b => b.ManufacturerId == ManufacturerId)
+                    .ToList();
+        }
 
         public Product? GetProduct(int id)
         {

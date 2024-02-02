@@ -13,7 +13,7 @@ namespace PCStore.BL.Interfaces
 
         public Product? GetProduct(int id);
 
-        //public List<Product> GetAllProductsByAuthorAfterReleaseDate(int AuthorId, DateTime DateAfter);
+        public List<Product> GetAllProductsFromManufacturerAfterReleaseDate(int ManufacturerId, DateTime DateAfter);
         public List<Product> GetAllProducts();
     }
 }

@@ -14,6 +14,6 @@ namespace PCStore.DL.Interfaces
 
         public List<Product> GetAllProducts();
 
-        //public List<Product> GetAllProductsByAuthor(int authorId);
+        public List<Product> GetAllProductsByManufacturer(int ManufacturerId);
     }
 }
