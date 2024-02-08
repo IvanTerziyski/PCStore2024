@@ -1,3 +1,11 @@
+using PCStore.DL.Interfaces;
+using PCStore.DL.Repositories;
+using PCStore.BL.Interfaces;
+using PCStore.BL.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using PCStore.HealthChecks;
+
 namespace PCStore
 {
     public class Program
@@ -7,11 +15,22 @@ namespace PCStore
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+            builder.Services.AddSingleton<IProductService, ProductService>();
+            builder.Services.AddSingleton<IManufacturerRepository, ManufacturerRepository>();
+            builder.Services.AddSingleton<IManufacturerService, ManufacturerService>();
+            builder.Services.AddSingleton<IStoreService, StoreService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
+
+            builder.Services.AddHealthChecks()
+            .AddCheck<CustomHealthCheck>(nameof(CustomHealthCheck));
 
             var app = builder.Build();
 
@@ -26,6 +45,7 @@ namespace PCStore
 
             app.UseAuthorization();
 
+            app.MapHealthChecks("/healthz");
 
             app.MapControllers();
 
